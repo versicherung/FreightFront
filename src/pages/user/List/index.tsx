@@ -11,7 +11,7 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { addUser, userList, deleteUser, updateUser } from '@/services/api';
 
 const handleAdd = async (fields: API.AddUserParams) => {
-  const hide = message.loading('正在添加');
+  const hide = message.loading('正在添加', 0);
 
   try {
     await addUser({ ...fields, password: md5(fields.password) });
@@ -26,7 +26,7 @@ const handleAdd = async (fields: API.AddUserParams) => {
 };
 
 const handleDelete = async (fields: API.DeleteUserParams) => {
-  const hide = message.loading('正在删除');
+  const hide = message.loading('正在删除', 0);
 
   try {
     await deleteUser({ ...fields });
@@ -41,7 +41,7 @@ const handleDelete = async (fields: API.DeleteUserParams) => {
 };
 
 const handleUpdate = async (fields: API.UpdateUserParams) => {
-  const hide = message.loading('正在更新');
+  const hide = message.loading('正在更新', 0);
 
   try {
     await updateUser({

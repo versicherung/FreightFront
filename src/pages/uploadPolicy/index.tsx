@@ -74,7 +74,7 @@ const UploadPolicy: React.FC = () => {
           maxCount={1}
           name="file"
           action="/api/ocr/policy"
-          headers={{ Authorization: `insurance ${getCurrentUser()?.token}` }}
+          headers={{ Authorization: `freight ${getCurrentUser()?.token}` }}
         >
           <Button>
             <UploadOutlined />

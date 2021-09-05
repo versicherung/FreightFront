@@ -89,7 +89,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
 
 const AuthHeaderInterceptor: RequestInterceptor = (url, options) => {
   const res = getCurrentUser();
-  const authHeader = { Authorization: `insurance ${res?.token}` };
+  const authHeader = { Authorization: `freight ${res?.token}` };
 
   return {
     url,

@@ -39,7 +39,7 @@ const loginOut = async () => {
 };
 
 const handleUpdatePassword = async (password: string) => {
-  const hide = message.loading('正在修改密码');
+  const hide = message.loading('正在修改密码', 0);
 
   try {
     await updateOwnPassword({ newPassword: md5(password) });

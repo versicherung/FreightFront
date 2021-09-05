@@ -85,8 +85,6 @@ declare namespace API {
 
   type CreateOrderParams = {
     startTime: string;
-    paymentId: number;
-    carTypeId: number;
     idCard?: {
       id: number;
       name: string;

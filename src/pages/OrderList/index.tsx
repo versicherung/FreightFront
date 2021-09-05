@@ -1,21 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { useRequest, useModel } from 'umi';
-import { Button, Dropdown, Menu, message } from 'antd';
+import { Button, message } from 'antd';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
-import { EllipsisOutlined } from '@ant-design/icons';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
-import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
-import {
-  order,
-  exportExcel,
-  exportEvidence,
-  exportPolicy,
-  orderDetail,
-  exportOverPolicy,
-} from '@/services/api';
+import { order, exportExcel, exportEvidence, orderDetail } from '@/services/api';
 
 import DetailDraw from './components/DetailDraw';
 
@@ -24,7 +15,7 @@ const handleExportExcel = async (
   id?: number[],
 ) => {
   const params: { startTime?: string; endTime?: string; id?: number[] } = {};
-  const hide = message.loading('正在导出');
+  const hide = message.loading('正在导出', 0);
 
   // 为导出接口添加参数
   if (formRef.current) {
@@ -58,7 +49,7 @@ const handleExportExcel = async (
 };
 
 const handleExportEvidence = async (ids: number[]) => {
-  const hide = message.loading('正在导出');
+  const hide = message.loading('正在导出', 0);
 
   try {
     const res = await exportEvidence({ ids });
@@ -79,89 +70,89 @@ const handleExportEvidence = async (ids: number[]) => {
   }
 };
 
-const handleExportPolicy = async (ids: number[]) => {
-  const hide = message.loading('正在导出');
+// const handleExportPolicy = async (ids: number[]) => {
+//   const hide = message.loading('正在导出');
 
-  try {
-    const res = await exportPolicy({ ids });
-    hide();
+//   try {
+//     const res = await exportPolicy({ ids });
+//     hide();
 
-    const url = window.URL.createObjectURL(res);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', 'export.zip');
-    link.style.display = 'none';
+//     const url = window.URL.createObjectURL(res);
+//     const link = document.createElement('a');
+//     link.setAttribute('href', url);
+//     link.setAttribute('download', 'export.zip');
+//     link.style.display = 'none';
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  } catch (e) {
-    hide();
-    message.error('导出文件失败，请稍后重试');
-  }
-};
+//     document.body.appendChild(link);
+//     link.click();
+//     document.body.removeChild(link);
+//   } catch (e) {
+//     hide();
+//     message.error('导出文件失败，请稍后重试');
+//   }
+// };
 
-const handleExportOverPolicy = async (ids: number[], downloadType: number) => {
-  const hide = message.loading('正在导出');
+// const handleExportOverPolicy = async (ids: number[], downloadType: number) => {
+//   const hide = message.loading('正在导出');
 
-  try {
-    const res = await exportOverPolicy({ ids, downloadType });
-    hide();
+//   try {
+//     const res = await exportOverPolicy({ ids, downloadType });
+//     hide();
 
-    const url = window.URL.createObjectURL(res);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', 'export.zip');
-    link.style.display = 'none';
+//     const url = window.URL.createObjectURL(res);
+//     const link = document.createElement('a');
+//     link.setAttribute('href', url);
+//     link.setAttribute('download', 'export.zip');
+//     link.style.display = 'none';
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  } catch (e) {
-    hide();
-    message.error('导出文件失败，请稍后重试');
-  }
-};
+//     document.body.appendChild(link);
+//     link.click();
+//     document.body.removeChild(link);
+//   } catch (e) {
+//     hide();
+//     message.error('导出文件失败，请稍后重试');
+//   }
+// };
 
-const DropDownMenu: React.FC<{ ids: number[]; policy: boolean; overPolicy: boolean }> = ({
-  ids,
-  policy,
-  overPolicy,
-}) => {
-  const handleMenuClick: MenuClickEventHandler = ({ key }) => {
-    if (key === 'downloadInsurance') {
-      handleExportPolicy(ids);
-      return;
-    }
+// const DropDownMenu: React.FC<{ ids: number[]; policy: boolean; overPolicy: boolean }> = ({
+//   ids,
+//   policy,
+//   overPolicy,
+// }) => {
+//   const handleMenuClick: MenuClickEventHandler = ({ key }) => {
+//     if (key === 'downloadInsurance') {
+//       handleExportPolicy(ids);
+//       return;
+//     }
 
-    if (key === 'downloadOverInsuranceWithPng') {
-      handleExportOverPolicy(ids, 0);
-      return;
-    }
+//     if (key === 'downloadOverInsuranceWithPng') {
+//       handleExportOverPolicy(ids, 0);
+//       return;
+//     }
 
-    if (key === 'downloadOverInsuranceWithPDF') {
-      handleExportOverPolicy(ids, 1);
-      return;
-    }
+//     if (key === 'downloadOverInsuranceWithPDF') {
+//       handleExportOverPolicy(ids, 1);
+//       return;
+//     }
 
-    if (key === 'downloadOverInsuranceWithAll') {
-      handleExportOverPolicy(ids, 2);
-    }
-  };
+//     if (key === 'downloadOverInsuranceWithAll') {
+//       handleExportOverPolicy(ids, 2);
+//     }
+//   };
 
-  return (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="downloadInsurance" disabled={!policy}>
-        下载出保单
-      </Menu.Item>
-      <Menu.SubMenu title="下载投保单" disabled={!overPolicy}>
-        <Menu.Item key="downloadOverInsuranceWithPng">仅图片</Menu.Item>
-        <Menu.Item key="downloadOverInsuranceWithPDF">仅PDF</Menu.Item>
-        <Menu.Item key="downloadOverInsuranceWithAll">全部材料</Menu.Item>
-      </Menu.SubMenu>
-    </Menu>
-  );
-};
+//   return (
+//     <Menu onClick={handleMenuClick}>
+//       <Menu.Item key="downloadInsurance" disabled={!policy}>
+//         下载出保单
+//       </Menu.Item>
+//       <Menu.SubMenu title="下载投保单" disabled={!overPolicy}>
+//         <Menu.Item key="downloadOverInsuranceWithPng">仅图片</Menu.Item>
+//         <Menu.Item key="downloadOverInsuranceWithPDF">仅PDF</Menu.Item>
+//         <Menu.Item key="downloadOverInsuranceWithAll">全部材料</Menu.Item>
+//       </Menu.SubMenu>
+//     </Menu>
+//   );
+// };
 
 const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -225,16 +216,16 @@ const TableList: React.FC = () => {
       hideInTable: initialState?.currentUser?.role === 4,
       search: false,
     },
-    {
-      title: '车型',
-      dataIndex: 'carType',
-      search: false,
-    },
-    {
-      title: '付费方式',
-      dataIndex: 'payType',
-      search: false,
-    },
+    // {
+    //   title: '车型',
+    //   dataIndex: 'carType',
+    //   search: false,
+    // },
+    // {
+    //   title: '付费方式',
+    //   dataIndex: 'payType',
+    //   search: false,
+    // },
     {
       title: '操作',
       dataIndex: 'option',
@@ -248,24 +239,24 @@ const TableList: React.FC = () => {
         >
           下载证明材料
         </a>,
-        <Dropdown
-          overlay={
-            <DropDownMenu
-              ids={[record.id]}
-              policy={typeof record.policy === 'string'}
-              overPolicy={typeof record.overPolicy === 'string'}
-            />
-          }
-        >
-          <a
-            key="moreAction"
-            onClick={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <EllipsisOutlined />
-          </a>
-        </Dropdown>,
+        // <Dropdown
+        //   overlay={
+        //     <DropDownMenu
+        //       ids={[record.id]}
+        //       policy={typeof record.policy === 'string'}
+        //       overPolicy={typeof record.overPolicy === 'string'}
+        //     />
+        //   }
+        // >
+        //   <a
+        //     key="moreAction"
+        //     onClick={(e) => {
+        //       e.preventDefault();
+        //     }}
+        //   >
+        //     <EllipsisOutlined />
+        //   </a>
+        // </Dropdown>,
       ],
     },
   ];
@@ -350,7 +341,7 @@ const TableList: React.FC = () => {
             导出证明材料
           </Button>
 
-          <Button
+          {/* <Button
             onClick={async () => {
               await handleExportPolicy(selectedRowsState.map((item) => item.id));
               setSelectedRows([]);
@@ -371,7 +362,7 @@ const TableList: React.FC = () => {
             }}
           >
             导出投保单（图片版）
-          </Button>
+          </Button> */}
         </FooterToolbar>
       )}
 

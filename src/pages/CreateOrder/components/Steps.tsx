@@ -9,7 +9,7 @@ import { createOrder } from '@/services/api';
 import UploadAliyunOSS from './UploadAliyunOSS';
 
 const handleOCR = async (callback: () => Promise<void>, failCallback: () => void) => {
-  const hide = message.loading('正在进行OCR识别');
+  const hide = message.loading('正在进行OCR识别', 0);
 
   try {
     await callback();
@@ -49,8 +49,6 @@ const Steps: React.FC<{
   const onFinish = async (value: any) => {
     const data: API.CreateOrderParams = {
       startTime: value.startTime,
-      carTypeId: value.carType,
-      paymentId: value.payment,
     };
 
     if (value.idOrBusiness === 'idCard') {
@@ -85,9 +83,9 @@ const Steps: React.FC<{
       };
     }
 
-    const hide = message.loading('正在创建订单');
+    const hide = message.loading('正在创建订单', 0);
     try {
-      createOrder(data);
+      await createOrder(data);
       hide();
       message.info('订单创建成功');
       setIsFinish(true);
@@ -105,7 +103,7 @@ const Steps: React.FC<{
         title="选择车辆类型，设置基本信息"
         initialValues={{
           insuranceType: 'newCar',
-          startTime: moment(),
+          startTime: moment('2021-09-11'),
           payment: 1,
           carType: 1,
         }}
@@ -128,7 +126,7 @@ const Steps: React.FC<{
           rules={[{ required: true, message: '请选择起保日期' }]}
         />
 
-        <ProFormSelect
+        {/* <ProFormSelect
           label="付费方式"
           width="md"
           name="payment"
@@ -148,7 +146,7 @@ const Steps: React.FC<{
             { label: '普通货车', value: 1 },
             { label: '自卸搅拌', value: 2 },
           ]}
-        />
+        /> */}
       </StepsForm.StepForm>
 
       <StepsForm.StepForm
@@ -398,7 +396,18 @@ const Steps: React.FC<{
               width="md"
               placeholder="请输入车牌号码"
               disabled={!isThirdAfterOcr}
-              rules={[{ required: true }]}
+              rules={[
+                { required: true },
+                () => ({
+                  validator(_, value) {
+                    if (/^[苏浙沪皖粤湘鄂渝].*/.test(value) || /^冀F.*/.test(value)) {
+                      return Promise.resolve();
+                    }
+
+                    return Promise.reject(new Error('仅限“苏浙沪皖粤湘鄂渝”与“冀F”地区车辆'));
+                  },
+                }),
+              ]}
             />
 
             <ProFormText
@@ -483,7 +492,7 @@ const Steps: React.FC<{
         )}
       </StepsForm.StepForm>
 
-      <StepsForm.StepForm title="上传其他材料">
+      {/* <StepsForm.StepForm title="上传其他材料">
         <UploadAliyunOSS
           namespace="otherFile"
           ocrCallback={async (res) => {
@@ -504,7 +513,7 @@ const Steps: React.FC<{
           }}
           onRemove={() => {}}
         />
-      </StepsForm.StepForm>
+      </StepsForm.StepForm> */}
     </StepsForm>
   );
 };

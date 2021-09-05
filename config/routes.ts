@@ -26,13 +26,13 @@ export default [
       { component: './404' },
     ],
   },
-  {
-    name: '保单上传',
-    icon: 'cloud-upload',
-    path: '/uploadPolicy',
-    component: './uploadPolicy',
-    access: 'canAdminAndInsurance',
-  },
+  // {
+  //   name: '保单上传',
+  //   icon: 'cloud-upload',
+  //   path: '/uploadPolicy',
+  //   component: './uploadPolicy',
+  //   access: 'canAdminAndInsurance',
+  // },
   {
     name: '用户管理',
     icon: 'user',

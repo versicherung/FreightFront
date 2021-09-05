@@ -23,7 +23,7 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
   });
 }
 
-/** 获取订单列表 GET /api/insurance */
+/** 获取订单列表 GET /api/freight */
 export async function order(
   params: {
     // query
@@ -34,7 +34,7 @@ export async function order(
   },
   options?: { [key: string]: any },
 ) {
-  return request<API.OrderList>('/api/insurance', {
+  return request<API.OrderList>('/api/freight', {
     method: 'GET',
     params: {
       ...params,
@@ -43,7 +43,7 @@ export async function order(
   });
 }
 
-/** 获取订单详情 GET /api/insurance/detail */
+/** 获取订单详情 GET /api/freight/detail */
 export async function orderDetail(
   params: {
     // query
@@ -51,7 +51,7 @@ export async function orderDetail(
   },
   options?: { [key: string]: any },
 ) {
-  return request<API.OrderDetail>('/api/insurance/detail', {
+  return request<API.OrderDetail>('/api/freight/detail', {
     method: 'GET',
     params: {
       ...params,
@@ -60,9 +60,9 @@ export async function orderDetail(
   });
 }
 
-// 导出 Excel 表格 GET /api/insurance/export
+// 导出 Excel 表格 GET /api/freight/export
 export async function exportExcel(params: { startTime?: string; endTime?: string; id?: number[] }) {
-  return umiRequest('/api/insurance/export', {
+  return umiRequest('/api/freight/export', {
     responseType: 'blob',
     method: 'GET',
     params: {
@@ -71,9 +71,9 @@ export async function exportExcel(params: { startTime?: string; endTime?: string
   });
 }
 
-// 创建订单 POST /api/insurance
+// 创建订单 POST /api/freight
 export async function createOrder(params: API.CreateOrderParams) {
-  return request('/api/insurance', {
+  return request('/api/freight', {
     method: 'POST',
     data: params,
   });
