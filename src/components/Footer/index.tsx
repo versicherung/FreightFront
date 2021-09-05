@@ -2,7 +2,7 @@ import { GithubOutlined } from '@ant-design/icons';
 import { DefaultFooter } from '@ant-design/pro-layout';
 
 export default () => {
-  const defaultMessage = '蚂蚁集团体验技术部出品';
+  const defaultMessage = '货运安责系统';
   const currentYear = new Date().getFullYear();
 
   return (
@@ -10,8 +10,8 @@ export default () => {
       copyright={`${currentYear} ${defaultMessage}`}
       links={[
         {
-          key: '车险出单系统',
-          title: '车险出单系统',
+          key: '货运安责系统',
+          title: '货运安责系统',
           href: '',
           blankTarget: false,
         },
