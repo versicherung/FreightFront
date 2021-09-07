@@ -60,6 +60,23 @@ export async function orderDetail(
   });
 }
 
+/** 删除订单 DELETE /api/freight */
+export async function deleteOrder(
+  params: {
+    // query
+    id: number;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<API.OrderDetail>('/api/freight', {
+    method: 'DELETE',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
 // 导出 Excel 表格 GET /api/freight/export
 export async function exportExcel(params: { startTime?: string; endTime?: string; id?: number[] }) {
   return umiRequest('/api/freight/export', {

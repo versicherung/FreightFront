@@ -1,14 +1,27 @@
 import React, { useState, useRef } from 'react';
 import { useRequest, useModel } from 'umi';
-import { Button, message } from 'antd';
+import { Button, message, Popconfirm } from 'antd';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 
-import { order, exportExcel, exportEvidence, orderDetail } from '@/services/api';
+import { order, exportExcel, exportEvidence, orderDetail, deleteOrder } from '@/services/api';
 
 import DetailDraw from './components/DetailDraw';
+
+const handleDeleteOrder = async (id: number) => {
+  const params: { id: number } = { id };
+  const hide = message.loading('正在删除', 0);
+
+  try {
+    await deleteOrder(params);
+    hide();
+  } catch (e) {
+    hide();
+    message.error('删除订单失败，请稍后重试');
+  }
+};
 
 const handleExportExcel = async (
   formRef: React.MutableRefObject<ProFormInstance | undefined>,
@@ -239,24 +252,29 @@ const TableList: React.FC = () => {
         >
           下载证明材料
         </a>,
-        // <Dropdown
-        //   overlay={
-        //     <DropDownMenu
-        //       ids={[record.id]}
-        //       policy={typeof record.policy === 'string'}
-        //       overPolicy={typeof record.overPolicy === 'string'}
-        //     />
-        //   }
-        // >
-        //   <a
-        //     key="moreAction"
-        //     onClick={(e) => {
-        //       e.preventDefault();
-        //     }}
-        //   >
-        //     <EllipsisOutlined />
-        //   </a>
-        // </Dropdown>,
+        initialState?.currentUser?.role !== 4 ? (
+          <Popconfirm
+            title="请确认删除！"
+            onConfirm={async () => {
+              await handleDeleteOrder(record.id);
+              actionRef.current?.reload();
+            }}
+            okText="是"
+            cancelText="否"
+          >
+            <a
+              key="deleteItem"
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+              style={{
+                color: 'red',
+              }}
+            >
+              删除
+            </a>
+          </Popconfirm>
+        ) : null,
       ],
     },
   ];
@@ -272,15 +290,6 @@ const TableList: React.FC = () => {
           labelWidth: 120,
         }}
         toolBarRender={() => [
-          // <Button
-          //   type="primary"
-          //   key="primary"
-          //   onClick={() => {
-          //     history.push('/order/create');
-          //   }}
-          // >
-          //   <PlusOutlined /> 新建
-          // </Button>,
           <Button key="out" type="primary" onClick={() => handleExportExcel(formRef)}>
             导出承保信息
           </Button>,
