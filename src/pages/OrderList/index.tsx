@@ -210,6 +210,17 @@ const TableList: React.FC = () => {
       hideInSearch: true,
     },
     {
+      title: '创建人',
+      dataIndex: 'username',
+      hideInTable: initialState?.currentUser?.role === 4,
+      search: false,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createAt',
+      search: false,
+    },
+    {
       title: '创建时间',
       dataIndex: 'startTime',
       valueType: 'dateRange',
@@ -222,12 +233,6 @@ const TableList: React.FC = () => {
           };
         },
       },
-    },
-    {
-      title: '创建人',
-      dataIndex: 'username',
-      hideInTable: initialState?.currentUser?.role === 4,
-      search: false,
     },
     // {
     //   title: '车型',
